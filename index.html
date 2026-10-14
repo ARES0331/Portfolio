@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SU HUI | 艺术作品集与商业定价</title>
+  <style>
+    :root {
+      --primary: #5c6bc0;
+      --primary-light: #e8eaf6;
+      --accent: #ff8a65;
+      --bg: #fafafa;
+      --card-bg: #ffffff;
+      --text: #2c3e50;
+      --text-muted: #667085;
+      --border: #eaecf0;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* 顶部导航 */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    /* 通用容器 */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+
+    /* 首屏 Hero */
+    .hero {
+      text-align: center;
+      padding: 6rem 1.5rem 4rem;
+      background: linear-gradient(180deg, #f3f4fd 0%, var(--bg) 100%);
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: #1a237e;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 2rem;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.75rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #4a57a8;
+      box-shadow: 0 4px 12px rgba(92, 107, 192, 0.3);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* 区域标题 */
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #1f2937;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+    }
+
+    /* 作品集卡片网格 */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .portfolio-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: transform 0.2s;
+    }
+
+    .portfolio-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card-img {
+      height: 220px;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+    }
+
+    .card-tag {
+      font-size: 0.75rem;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .card-body h3 {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+
+    .card-body p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* 价格表网格 */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .pricing-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pricing-card.featured {
+      border: 2px solid var(--primary);
+    }
+
+    .badge-popular {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    .pricing-card h3 {
+      font-size: 1.35rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .price {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .price-period {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: normal;
+    }
+
+    .pricing-card ul {
+      list-style: none;
+      margin: 1.5rem 0;
+      flex-grow: 1;
+    }
+
+    .pricing-card li {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pricing-card li::before {
+      content: "✓";
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    /* 联系表单 */
+    .contact-box {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 2.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部导航 -->
+  <header>
+    <a href="#" class="logo">SU HUI ART STUDIO</a>
+    <nav>
+      <a href="#about">关于</a>
+      <a href="#portfolio">作品集</a>
+      <a href="#pricing">价目目录</a>
+      <a href="#contact">联系预约</a>
+    </nav>
+  </header>
+
+  <!-- 首屏 -->
+  <section class="hero">
+    <h1>色彩捕捉情绪，画笔构建温度</h1>
+    <p>欢迎来到我的创作空间。这里集中呈现我的独立插画、漫展周边产品，以及面向青少儿的趣味艺术手工工坊。</p>
+    <div class="btn-group">
+      <a href="#portfolio" class="btn btn-primary">浏览精选作品</a>
+      <a href="#pricing" class="btn btn-secondary">查看委托价目</a>
+    </div>
+  </section>
+
+  <!-- 作品集展示 -->
+  <section id="portfolio" class="container">
+    <div class="section-header">
+      <h2>精选作品集 (Portfolio)</h2>
+      <p>插画视觉、文创实体周边与艺术工坊实录</p>
+    </div>
+
+    <div class="portfolio-grid">
+      <!-- 作品 1 -->
+      <div class="portfolio-card">
+        <div class="card-img">[ 插画配图：氛围叙事插画 ]</div>
+        <div class="card-body">
+          <span class="card-tag">原创插画</span>
+          <h3>《林间初晴》</h3>
+          <p>数字手绘，探索柔和散射光与自然生灵的互动，适合绘本与海报。</p>
+        </div>
+      </div>
+
+      <!-- 作品 2 -->
+      <div class="portfolio-card">
+        <div class="card-img">[ 周边实拍：艺术微喷与明信片 ]</div>
+        <div class="card-body">
+          <span class="card-tag">展会文创</span>
+          <h3>四季诗篇 · 特种纸明信片套组</h3>
+          <p>350g无酸艺术纸双面印制，漫展畅销周边，色彩高保真还原本作。</p>
+        </div>
+      </div>
+
+      <!-- 作品 3 -->
+      <div class="portfolio-card">
+        <div class="card-img">[ 工坊纪实：少儿立体拼贴创作 ]</div>
+        <div class="card-body">
+          <span class="card-tag">少儿艺术工坊</span>
+          <h3>假日手作：“我的微型奇幻星球”</h3>
+          <p>小班制综合材料工坊，启发孩子感知色彩搭配与立体空间构建。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 价目表 -->
+  <section id="pricing" class="container" style="background-color: #fcfcfd;">
+    <div class="section-header">
+      <h2>服务与价格目录 (Pricing Catalog)</h2>
+      <p>透明合理的委托与课程收费体系，欢迎按需预约定制</p>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- 方案 1 -->
+      <div class="pricing-card">
+        <h3>个人插画定制</h3>
+        <div class="price">¥180 - ¥800 <span class="price-period">/ 件起</span></div>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">适用于个人头像、立绘壁纸或角色半身插画</p>
+        <ul>
+          <li>高清 300dpi 电子交付</li>
+          <li>包含草稿、线稿阶段各 1 次反馈</li>
+          <li>制作周期约 5~10 个工作日</li>
+          <li>提供个人非商业使用授权</li>
+        </ul>
+        <a href="#contact" class="btn btn-secondary" style="text-align: center;">预约插画委托</a>
+      </div>
+
+      <!-- 方案 2 -->
+      <div class="pricing-card featured">
+        <div class="badge-popular">最受欢迎</div>
+        <h3>文创周边 / 商业插画</h3>
+        <div class="price">¥1,000+ <span class="price-period">/ 项目起</span></div>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">适用于书籍包装、周边批量印制及展会贩售</p>
+        <ul>
+          <li>提供分层印刷标准工程文件 (CMYK)</li>
+          <li>跟进特种纸工艺打样建议与排版</li>
+          <li>包含正式商用授权协议</li>
+          <li>阶梯批量批发/寄售合作特惠</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary" style="text-align: center;">洽谈商用合作</a>
+      </div>
+
+      <!-- 方案 3 -->
+      <div class="pricing-card">
+        <h3>少儿创意艺术工坊</h3>
+        <div class="price">¥180 - ¥260 <span class="price-period">/ 人 / 课</span></div>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">适合 5-12 岁少儿假日手作与综合材料探索</p>
+        <ul>
+          <li>6-8 人精品小班启发式教学</li>
+          <li>费用已全包高品质环保手作材料</li>
+          <li>课后完成并带走完整成品装置</li>
+          <li>支持家庭亲子或机构专场定制</li>
+        </ul>
+        <a href="#contact" class="btn btn-secondary" style="text-align: center;">咨询工坊排期</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 预约与联系表单 -->
+  <section id="contact" class="container">
+    <div class="section-header">
+      <h2>联系我与预约咨询</h2>
+      <p>无论是非商用约稿、展会文创合作，还是少儿工坊报名，欢迎随时沟通！</p>
+    </div>
+
+    <div class="contact-box">
+      <form onsubmit="event.preventDefault(); alert('感谢您的留言！这是一份演示表单，您可以配置实际邮箱或第三方表单服务。');">
+        <div class="form-group">
+          <label>您的称呼 / 机构名称</label>
+          <input type="text" placeholder="例如：李先生 / 某文化机构" required />
+        </div>
+        <div class="form-group">
+          <label>联系方式（邮箱 / 微信）</label>
+          <input type="text" placeholder="name@example.com 或 微信ID" required />
+        </div>
+        <div class="form-group">
+          <label>咨询项目类型</label>
+          <select>
+            <option>个人插画约稿</option>
+            <option>商业插画 / 包装 / 视觉设计</option>
+            <option>文创周边批量采购 / 寄售</option>
+            <option>少儿假日艺术工坊报名 / 包场</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>需求简述（预期预算、时间截点、画面风格偏好等）</label>
+          <textarea rows="4" placeholder="请简要描述您的委托需求或课程咨询内容..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">发送预约意向</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer>
+    <p>© 2025 SU HUI. All Rights Reserved. | 独立插画师与艺术工坊设计</p>
+  </footer>
+
+</body>
+</html>
